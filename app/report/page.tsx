@@ -272,7 +272,7 @@ export default function ReportPage() {
               <div className="w-full h-64 rounded overflow-hidden">
                 <MapContainer center={[6.5244,3.3792]} zoom={12} whenCreated={undefined} eventHandlers={undefined} className="w-full h-full">
                   <MapLoader onReady={() => setMapReady(true)} />
-                  <TileLayer url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}" subdomains={['mt0', 'mt1', 'mt2', 'mt3']} maxZoom={23}/>
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                   <ClickHandler dropMode={dropMode} onMapClick={e => { setMarkerPos({ lat: e.latlng.lat, lng: e.latlng.lng }); setDropMode(false); }} />
                   {markerPos && <><CircleMarker center={[markerPos.lat,markerPos.lng]} radius={8} pathOptions={{ color: "#EF4444", fillOpacity: 1 }}/>                    <Marker position={[markerPos.lat,markerPos.lng]} draggable eventHandlers={{ dragend(e) { const m = e.target.getLatLng(); setMarkerPos({ lat: m.lat, lng: m.lng }); } }} /></>}
                 </MapContainer>
