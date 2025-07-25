@@ -188,6 +188,36 @@ export default function MapPage() {
   };
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // inside MapPage component, before return:
+  const handleGetDirections = (r: Report) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${r.latitude},${r.longitude}`;
+    window.open(url, "_blank");
+  };
+
+  const handleShare = async (r: Report) => {
+    const shareData = {
+      title: r.title,
+      text: `Check out this report: ${r.title}`,
+      url: `${window.location.origin}/map?reportId=${r.id}`,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.error("Share failed:", err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareData.url);
+        alert("Link copied to clipboard!");
+      } catch {
+        prompt("Copy this link:", shareData.url);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* HEADER + FILTERS */}
@@ -473,10 +503,10 @@ export default function MapPage() {
                   Upvote ({selectedReport.upvotes})
                 </Button>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleShare(selectedReport)}>
                     Share
                   </Button>
-                  <Button size="sm">Get Directions</Button>
+                  <Button size="sm" onClick={() => handleGetDirections(selectedReport)}>Get Directions</Button>
                 </div>
               </div>
             </CardContent>
